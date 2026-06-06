@@ -58,9 +58,9 @@ export default function PayPage() {
     qrRef.current.innerHTML = "";
     try {
       const url = encodeURL({
-        recipient: new PublicKey(circle.address),
-        amount: new BigNumber(circle.contributionAmount),
-        splToken: USDC_MINT,
+        recipient: new PublicKey(circle.address) as any,
+        amount: new BigNumber(circle.contributionAmount) as any,
+        splToken: USDC_MINT as any,
         label: "EsusuX Circle Contribution",
         message: `Join EsusuX circle — contribute ${circle.contributionAmount} USDC`,
       });

@@ -11,6 +11,7 @@ import { PROGRAM_ID } from "@/lib/constants";
 import { getCirclePDA, getMemberListPDA } from "@/lib/pdas";
 
 interface CircleData {
+  address: string;
   organizer: string;
   contributionAmount: number;
   maxMembers: number;
@@ -53,6 +54,7 @@ export default function Dashboard() {
       const [circlePDA] = getCirclePDA(publicKey);
       const circleAccount = await (program.account as any).circle.fetch(circlePDA);
       setCircle({
+        address: circlePDA.toString(),
         organizer: circleAccount.organizer.toString(),
         contributionAmount: circleAccount.contributionAmount.toNumber() / 1_000_000,
         maxMembers: circleAccount.maxMembers,
@@ -96,12 +98,20 @@ export default function Dashboard() {
             <h1 className="text-3xl font-black">Your Dashboard</h1>
             <p className="text-gray-500 text-sm mt-1">Wallet: {shortKey}</p>
           </div>
-          <button
-            onClick={() => router.push("/create")}
-            className="bg-green-500 text-black font-bold px-6 py-3 rounded-xl hover:bg-green-400 transition cursor-pointer"
-          >
-            + Create Circle
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => router.push("/pay")}
+              className="bg-gray-800 text-white font-bold px-6 py-3 rounded-xl hover:bg-gray-700 transition cursor-pointer border border-gray-700"
+            >
+              Share QR ↗
+            </button>
+            <button
+              onClick={() => router.push("/create")}
+              className="bg-green-500 text-black font-bold px-6 py-3 rounded-xl hover:bg-green-400 transition cursor-pointer"
+            >
+              + Create Circle
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -142,6 +152,20 @@ export default function Dashboard() {
                   <div className="font-bold text-green-400 text-lg">
                     {(circle.contributionAmount * circle.maxMembers).toFixed(2)} USDC
                   </div>
+                </div>
+                <div className="flex gap-2 mt-2">
+                  <button
+                    onClick={() => router.push("/pay")}
+                    className="flex-1 bg-gray-700 text-white text-sm font-bold py-2 rounded-xl hover:bg-gray-600 transition cursor-pointer"
+                  >
+                    Share QR ↗
+                  </button>
+                  <button
+                    onClick={() => router.push(`/join?circle=${circle.address || ""}`)}
+                    className="flex-1 bg-green-500 text-black text-sm font-bold py-2 rounded-xl hover:bg-green-400 transition cursor-pointer"
+                  >
+                    Join Circle
+                  </button>
                 </div>
               </div>
             ) : (
