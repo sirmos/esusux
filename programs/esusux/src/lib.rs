@@ -25,4 +25,8 @@ pub mod esusux {
     pub fn join_circle(ctx: Context<JoinCircle>) -> Result<()> {
         join_circle::handler(ctx)
     }
+
+    pub fn contribute_and_disburse(ctx: Context<ContributeAndDisburse>) -> Result<()> {
+        contribute_and_disburse::handler(ctx)
+    }
 }
